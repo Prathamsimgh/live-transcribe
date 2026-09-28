@@ -1,0 +1,5 @@
+transcripts/
+__pycache__/
+*.pyc
+config.json
+.venv/
