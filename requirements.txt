@@ -1,0 +1,24 @@
+# Live Transcribe — pinned to the combination verified working on this machine.
+#
+# GPU (nvidia-*) adds ~1GB and buys roughly 3x lower latency. Delete those two
+# lines to run CPU-only; asr.py falls back automatically on any CUDA failure.
+
+faster-whisper==1.2.0
+ctranslate2==4.5.0
+soxr==1.1.0
+silero-vad==6.2.3
+pyperclip==1.11.0
+
+# Capture + inference runtime. These were already installed on the target
+# machine; pinned here so a fresh checkout reproduces the verified behaviour.
+PyAudioWPatch==0.2.12.8
+numpy==1.26.4
+onnxruntime==1.22.1
+pynput==1.8.2
+
+# Windows GPU stack. ctranslate2 4.x requires cuDNN 9.
+nvidia-cudnn-cu12==8.9.2.26
+nvidia-cublas-cu12==12.8.0.14
+
+# Tests
+pytest==8.3.3

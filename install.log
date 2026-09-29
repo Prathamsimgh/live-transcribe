@@ -1,0 +1,112 @@
+Collecting faster-whisper
+  Downloading faster_whisper-1.2.1-py3-none-any.whl.metadata (16 kB)
+Collecting soxr
+  Using cached soxr-1.1.0-cp311-cp311-win_amd64.whl.metadata (5.8 kB)
+Collecting pyperclip
+  Downloading pyperclip-1.11.0-py3-none-any.whl.metadata (2.4 kB)
+Collecting pynput
+  Using cached pynput-1.8.2-py2.py3-none-any.whl.metadata (32 kB)
+Collecting PyAudioWPatch
+  Using cached pyaudiowpatch-0.2.12.8-cp311-cp311-win_amd64.whl.metadata (9.9 kB)
+Collecting numpy
+  Downloading numpy-2.4.6-cp311-cp311-win_amd64.whl.metadata (6.6 kB)
+Collecting onnxruntime
+  Downloading onnxruntime-1.30.0-cp311-cp311-win_amd64.whl.metadata (5.9 kB)
+Collecting nvidia-cudnn-cu12
+  Downloading nvidia_cudnn_cu12-9.26.0.51-py3-none-win_amd64.whl.metadata (1.9 kB)
+Collecting nvidia-cublas-cu12
+  Downloading nvidia_cublas_cu12-12.9.2.10-py3-none-win_amd64.whl.metadata (1.8 kB)
+Collecting ctranslate2<5,>=4.0 (from faster-whisper)
+  Downloading ctranslate2-4.8.2-cp311-cp311-win_amd64.whl.metadata (11 kB)
+Collecting huggingface-hub>=0.21 (from faster-whisper)
+  Downloading huggingface_hub-2.0.0-py3-none-any.whl.metadata (16 kB)
+Collecting tokenizers<1,>=0.13 (from faster-whisper)
+  Downloading tokenizers-0.23.2-cp310-abi3-win_amd64.whl.metadata (10 kB)
+Collecting av>=11 (from faster-whisper)
+  Downloading av-18.1.0-cp311-abi3-win_amd64.whl.metadata (5.1 kB)
+Collecting tqdm (from faster-whisper)
+  Downloading tqdm-4.70.1-py3-none-any.whl.metadata (57 kB)
+Collecting flatbuffers (from onnxruntime)
+  Downloading flatbuffers-25.12.19-py2.py3-none-any.whl.metadata (1.0 kB)
+Collecting packaging (from onnxruntime)
+  Downloading packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+Collecting protobuf>=4.25.8 (from onnxruntime)
+  Downloading protobuf-7.36.2-cp310-abi3-win_amd64.whl.metadata (595 bytes)
+Collecting pyyaml<7,>=5.3 (from ctranslate2<5,>=4.0->faster-whisper)
+  Using cached pyyaml-6.0.3-cp311-cp311-win_amd64.whl.metadata (2.4 kB)
+Collecting huggingface-hub>=0.21 (from faster-whisper)
+  Downloading huggingface_hub-1.33.0-py3-none-any.whl.metadata (16 kB)
+Collecting click<9.0.0,>=8.4.2 (from huggingface-hub>=0.21->faster-whisper)
+  Downloading click-8.5.0-py3-none-any.whl.metadata (2.6 kB)
+Collecting filelock>=3.10.0 (from huggingface-hub>=0.21->faster-whisper)
+  Downloading filelock-4.0.5-py3-none-any.whl.metadata (2.0 kB)
+Collecting fsspec>=2023.5.0 (from huggingface-hub>=0.21->faster-whisper)
+  Downloading fsspec-2026.9.0-py3-none-any.whl.metadata (10 kB)
+Collecting hf-xet<2.0.0,>=1.6.0 (from huggingface-hub>=0.21->faster-whisper)
+  Downloading hf_xet-1.6.0-cp38-abi3-win_amd64.whl.metadata (4.9 kB)
+Collecting httpx<1,>=0.23.0 (from huggingface-hub>=0.21->faster-whisper)
+  Using cached httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+Collecting typing-extensions>=4.1.0 (from huggingface-hub>=0.21->faster-whisper)
+  Using cached typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+Collecting anyio (from httpx<1,>=0.23.0->huggingface-hub>=0.21->faster-whisper)
+  Downloading anyio-4.15.1-py3-none-any.whl.metadata (4.7 kB)
+Collecting certifi (from httpx<1,>=0.23.0->huggingface-hub>=0.21->faster-whisper)
+  Downloading certifi-2026.7.22-py3-none-any.whl.metadata (2.5 kB)
+Collecting httpcore==1.* (from httpx<1,>=0.23.0->huggingface-hub>=0.21->faster-whisper)
+  Using cached httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+Collecting idna (from httpx<1,>=0.23.0->huggingface-hub>=0.21->faster-whisper)
+  Downloading idna-3.20-py3-none-any.whl.metadata (7.2 kB)
+Collecting h11>=0.16 (from httpcore==1.*->httpx<1,>=0.23.0->huggingface-hub>=0.21->faster-whisper)
+  Using cached h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+Collecting six (from pynput)
+  Using cached six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+Collecting nvidia-cuda-nvrtc-cu12 (from nvidia-cublas-cu12)
+  Downloading nvidia_cuda_nvrtc_cu12-12.9.86-py3-none-win_amd64.whl.metadata (1.7 kB)
+Collecting colorama (from tqdm->faster-whisper)
+  Using cached colorama-0.4.6-py2.py3-none-any.whl.metadata (17 kB)
+Downloading faster_whisper-1.2.1-py3-none-any.whl (1.1 MB)
+   ---------------------------------------- 1.1/1.1 MB 5.5 MB/s  0:00:00
+Downloading onnxruntime-1.30.0-cp311-cp311-win_amd64.whl (14.3 MB)
+   ---------------------------------------- 14.3/14.3 MB 3.8 MB/s  0:00:03
+Downloading ctranslate2-4.8.2-cp311-cp311-win_amd64.whl (19.2 MB)
+   ---------------------------------------- 19.2/19.2 MB 2.9 MB/s  0:00:06
+Using cached pyyaml-6.0.3-cp311-cp311-win_amd64.whl (158 kB)
+Downloading tokenizers-0.23.2-cp310-abi3-win_amd64.whl (2.9 MB)
+   ---------------------------------------- 2.9/2.9 MB 4.4 MB/s  0:00:00
+Downloading huggingface_hub-1.33.0-py3-none-any.whl (846 kB)
+   ---------------------------------------- 846.4/846.4 kB 4.1 MB/s  0:00:00
+Downloading click-8.5.0-py3-none-any.whl (125 kB)
+Downloading hf_xet-1.6.0-cp38-abi3-win_amd64.whl (4.0 MB)
+   ---------------------------------------- 4.0/4.0 MB 4.0 MB/s  0:00:01
+Using cached httpx-0.28.1-py3-none-any.whl (73 kB)
+Using cached httpcore-1.0.9-py3-none-any.whl (78 kB)
+Using cached soxr-1.1.0-cp311-cp311-win_amd64.whl (176 kB)
+Downloading pyperclip-1.11.0-py3-none-any.whl (11 kB)
+Using cached pynput-1.8.2-py2.py3-none-any.whl (92 kB)
+Using cached pyaudiowpatch-0.2.12.8-cp311-cp311-win_amd64.whl (99 kB)
+Downloading numpy-2.4.6-cp311-cp311-win_amd64.whl (12.6 MB)
+   ---------------------------------------- 12.6/12.6 MB 3.8 MB/s  0:00:03
+Downloading nvidia_cudnn_cu12-9.26.0.51-py3-none-win_amd64.whl (746.5 MB)
+   ---------------------------------------- 746.5/746.5 MB 3.2 MB/s  0:04:11
+Downloading nvidia_cublas_cu12-12.9.2.10-py3-none-win_amd64.whl (553.2 MB)
+   ---------------------------------------- 553.2/553.2 MB 3.1 MB/s  0:02:59
+Downloading av-18.1.0-cp311-abi3-win_amd64.whl (27.6 MB)
+   ---------------------------------------- 27.6/27.6 MB 3.9 MB/s  0:00:06
+Downloading filelock-4.0.5-py3-none-any.whl (108 kB)
+Downloading fsspec-2026.9.0-py3-none-any.whl (221 kB)
+Using cached h11-0.16.0-py3-none-any.whl (37 kB)
+Downloading packaging-26.3-py3-none-any.whl (129 kB)
+Downloading protobuf-7.36.2-cp310-abi3-win_amd64.whl (456 kB)
+Downloading tqdm-4.70.1-py3-none-any.whl (80 kB)
+Using cached typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+Downloading anyio-4.15.1-py3-none-any.whl (132 kB)
+Downloading idna-3.20-py3-none-any.whl (69 kB)
+Downloading certifi-2026.7.22-py3-none-any.whl (136 kB)
+Using cached colorama-0.4.6-py2.py3-none-any.whl (25 kB)
+Downloading flatbuffers-25.12.19-py2.py3-none-any.whl (26 kB)
+Downloading nvidia_cuda_nvrtc_cu12-12.9.86-py3-none-win_amd64.whl (76.4 MB)
+   ---------------------------------------- 76.4/76.4 MB 3.0 MB/s  0:00:25
+Using cached six-1.17.0-py2.py3-none-any.whl (11 kB)
+Installing collected packages: pyperclip, PyAudioWPatch, flatbuffers, typing-extensions, six, pyyaml, protobuf, packaging, nvidia-cuda-nvrtc-cu12, numpy, idna, hf-xet, h11, fsspec, filelock, colorama, click, certifi, av, tqdm, soxr, pynput, onnxruntime, nvidia-cublas-cu12, httpcore, ctranslate2, anyio, nvidia-cudnn-cu12, httpx, huggingface-hub, tokenizers, faster-whisper
+
+Successfully installed PyAudioWPatch-0.2.12.8 anyio-4.15.1 av-18.1.0 certifi-2026.7.22 click-8.5.0 colorama-0.4.6 ctranslate2-4.8.2 faster-whisper-1.2.1 filelock-4.0.5 flatbuffers-25.12.19 fsspec-2026.9.0 h11-0.16.0 hf-xet-1.6.0 httpcore-1.0.9 httpx-0.28.1 huggingface-hub-1.33.0 idna-3.20 numpy-2.4.6 nvidia-cublas-cu12-12.9.2.10 nvidia-cuda-nvrtc-cu12-12.9.86 nvidia-cudnn-cu12-9.26.0.51 onnxruntime-1.30.0 packaging-26.3 protobuf-7.36.2 pynput-1.8.2 pyperclip-1.11.0 pyyaml-6.0.3 six-1.17.0 soxr-1.1.0 tokenizers-0.23.2 tqdm-4.70.1 typing-extensions-4.16.0
