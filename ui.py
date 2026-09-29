@@ -191,11 +191,9 @@ class TranscribeWindow:
         self.controller.toggle()
 
     def _on_copy(self) -> None:
-        count = self.controller.copy_all()
-        self.status.configure(
-            text=f"copied {count} line{'s' if count != 1 else ''}"
-            if count else "nothing to copy"
-        )
+        # copy_all() posts its own status line, so the message is identical
+        # whether the copy came from the button, the hotkey, or STOP.
+        self.controller.copy_all()
 
     def _on_open(self) -> None:
         path = self.controller.transcript_path()

@@ -56,6 +56,7 @@ class Settings:
     hotkey_copy: str = "ctrl+alt+c"
     hotkey_toggle: str = "ctrl+alt+r"
     always_on_top: bool = True
+    copy_on_stop: bool = True
 
     @property
     def frame_ms(self) -> float:

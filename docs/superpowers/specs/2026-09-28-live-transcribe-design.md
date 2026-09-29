@@ -29,7 +29,7 @@ during implementation.
 |---|---|---|
 | 1 | Local `faster-whisper` on the RTX 3050 | Offline, zero cost, and keeps the user's scarce 7.7GB system RAM free by using otherwise-idle VRAM |
 | 2 | System audio only, via WASAPI loopback | Matches the stated use case; needs no virtual cable or driver install |
-| 3 | Hotkey copies the full transcript; no auto-copy | Auto-copying every chunk would make the clipboard unusable for anything else |
+| 3 | Hotkey copies the full transcript; no *auto*-copy per chunk | Auto-copying every chunk would make the clipboard unusable for anything else. Copying **once, when the user presses STOP**, is a different thing and does what the button did — see "Copy on stop" below |
 | 4 | Small always-visible Tkinter window | User can see state and transcript; Tkinter ships with Python, so no extra dependency |
 | 5 | Finished sentences only — no partial/hypothesis text | Whisper hallucinates on mid-word truncation, so partials visibly rewrite themselves. Removing them also enables cross-sentence context (see ASR below) and cuts GPU load ~70%. A VU meter replaces the "is it listening?" reassurance at zero GPU cost |
 | 6 | GPU inference with automatic CPU fallback | ~1GB one-time cuDNN/cuBLAS download buys ~3x lower latency and avoids holding ~1.5GB of RAM |
@@ -215,12 +215,21 @@ One file per day, append-only: `transcripts\2026-09-28.txt`.
   `Session stopped` footer before the process exits, so no file is left without
   one
 
-**Clipboard scope.** `Ctrl+Alt+C` and the Copy All button yield every sentence
-transcribed **since the app process launched** — spanning multiple START/STOP
-toggles, not just the most recent one. Sentences are joined by newlines with the
-`===` markers and the `[HH:MM:SS]` timestamps stripped, because the intent is
-pasting readable prose into a chat. Restarting the app resets this buffer; older
-text stays available in the transcript file.
+**Clipboard scope.** `Ctrl+Alt+C`, the Copy All button, and **pressing STOP**
+all yield every sentence transcribed **since the app process launched** —
+spanning multiple START/STOP toggles, not just the most recent one. Sentences
+are joined by newlines with the `===` markers and the `[HH:MM:SS]` timestamps
+stripped, because the intent is pasting readable prose into a chat. Restarting
+the app resets this buffer; older text stays available in the transcript file.
+
+**Copy on stop.** Pressing STOP copies that same buffer to the clipboard and
+reports the line count in the status line (`copied 4 lines to clipboard`), so no
+extra click is needed to paste what was just captured. This is a one-shot
+hand-over at the end of a session, not the per-chunk auto-copy Decision 3 ruled
+out. Set `copy_on_stop` to `false` in `config.json` to disable it; the button and
+hotkey keep working either way. A failing clipboard never costs a transcript —
+the text is already durable on disk by that point, and the status line says the
+copy failed rather than leaving the user assuming it worked.
 
 ## UI
 
@@ -282,6 +291,7 @@ exactly these values.
 | `hotkey_copy` | `"ctrl+alt+c"` | Copy everything since launch |
 | `hotkey_toggle` | `"ctrl+alt+r"` | Start/stop capture |
 | `always_on_top` | `true` | Window stays above others |
+| `copy_on_stop` | `true` | Pressing STOP copies everything since launch to the clipboard |
 
 Default `hallucination_phrases`: `"thank you"`, `"thanks for watching"`,
 `"subtitles by the amara.org community"`, `"please subscribe"`, `"."`. Matched
@@ -348,6 +358,7 @@ without a sound device.
 |---|---|
 | `segmenter` | Synthetic speech/silence frame patterns assert: start after 3 speech frames, pre-roll is prepended, end after 16 silent frames, sub-320ms utterances discarded, 10s cut lands on the trailing minimum-RMS frame, post-cut audio is retained |
 | `sinks` | Line format, session headers, same-day append does not truncate, BOM and CRLF present, fsync called per line, `PermissionError` buffers and retries, a `Session stopped` footer is written on shutdown, clipboard text spans multiple start/stop cycles and excludes headers and timestamps |
+| copy-on-stop | STOP copies the whole buffer since launch, `copy_on_stop=false` leaves the clipboard untouched, and a raising clipboard does not crash `stop()` or lose the transcript |
 | `asr` | Mocked model asserts GPU→CPU fallback on construction failure, `vad_filter=False`, `initial_prompt` threading from the previous sentence, and each of the three hallucination-guard conditions independently |
 | `audio` | Fake PyAudioWPatch asserts arbitrary-rate resampling to exactly 16kHz, N-channel downmix by averaging, 512-sample framing, callback never blocks, and device re-selection after a default-device change |
 | `config` | Defaults load when `config.json` is absent; unknown keys are ignored rather than fatal |

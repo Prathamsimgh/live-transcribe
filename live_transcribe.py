@@ -200,15 +200,45 @@ class App:
             self._worker = None
         self.writer.stop_session()
         self._say("running", False)
-        self._say("status", "stopped")
         if self.window is not None:
             self.window.set_level(0.0)
+
+        # Pressing STOP is the natural "I have what I came for" moment, so this
+        # is where the transcript is handed over. It covers everything captured
+        # since the app launched, not just the stopped session -- the buffer
+        # spans toggles by design.
+        if getattr(self.s, "copy_on_stop", True):
+            self._copy_all_on_stop()
+        else:
+            self._say("status", "stopped")
+
+    def _copy_all_on_stop(self) -> None:
+        try:
+            count = self.copy_all()
+        except Exception:
+            # A broken clipboard must never cost the user a transcript. The
+            # text is already durable on disk, so just say the copy failed.
+            self._say("status", "stopped - clipboard copy failed")
+            return
+        if count:
+            self._say("status", f"copied {count} line"
+                                 f"{'s' if count != 1 else ''} to clipboard")
+        else:
+            # Either nothing was captured, or the clipboard refused it. The
+            # file holds the transcript either way.
+            self._say("status", "stopped - nothing to copy")
 
     def copy_all(self) -> int:
         text = self.buffer.text()
         if not text:
             return 0
-        return len(self.buffer) if sinks.copy_to_clipboard(text) else 0
+        if not sinks.copy_to_clipboard(text):
+            return 0
+        if self.window is not None:
+            self._say("status", f"copied {len(self.buffer)} line"
+                                f"{'s' if len(self.buffer) != 1 else ''}"
+                                f" to clipboard")
+        return len(self.buffer)
 
     def transcript_path(self) -> str:
         return str(self.writer.path)
