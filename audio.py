@@ -153,8 +153,11 @@ class LoopbackCapture:
         if self._device_rate == self.target_rate or soxr is None:
             self._resampler = None
         else:
+            # MQ is ample for speech (16 kHz target) and far cheaper than HQ
+            # in the PortAudio callback at 192k -> 16k (12:1). HQ headroom
+            # only matters for music mastering, not VAD/ASR input.
             self._resampler = soxr.ResampleStream(
-                self._device_rate, self.target_rate, 1, dtype="float32", quality="HQ"
+                self._device_rate, self.target_rate, 1, dtype="float32", quality="MQ"
             )
 
         # Chunk sized so each callback carries roughly one output frame.

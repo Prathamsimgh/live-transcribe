@@ -21,6 +21,10 @@ ACCENT = "#4ec9b0"
 DANGER = "#e05561"
 PANEL = "#26262e"
 
+# Cap the on-screen history. The durable record is the transcript file;
+# an unbounded Tk Text widget gets slower to append to over a long session.
+MAX_VIEW_LINES = 500
+
 
 def to_pynput_hotkey(spec: str) -> str:
     """'ctrl+alt+c' -> '<ctrl>+<alt>+c'"""
@@ -165,6 +169,13 @@ class TranscribeWindow:
         else:
             self.view.insert("end", f"[{stamp}] ", "time")
             self.view.insert("end", f"{text}\n")
+        # Prune oldest lines beyond the cap (one check per sentence is cheap).
+        try:
+            total = int(self.view.index("end-1c").split(".")[0])
+            if total > MAX_VIEW_LINES:
+                self.view.delete("1.0", f"{total - MAX_VIEW_LINES + 1}.0")
+        except Exception:
+            pass
         self.view.see("end")
         self.view.configure(state="disabled")
 

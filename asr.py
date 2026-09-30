@@ -183,3 +183,29 @@ class Transcriber:
     def reset_context(self) -> None:
         """Forget the previous sentence, e.g. on a new session."""
         self._previous = ""
+
+    def warmup(self) -> None:
+        """Run one throwaway decode so the first real utterance is fast.
+
+        The first ctranslate2 call pays kernel/autotune warmup (measured
+        ~1.0s vs ~0.45s steady-state on the RTX 3050 for an 8.5s clip).
+        Silence is decoded with the hallucination guard bypassed and the
+        result discarded, so it cannot poison the prompt context.
+        """
+        try:
+            import numpy as np
+
+            silence = np.zeros(8000, dtype=np.float32)  # 0.5 s at 16 kHz
+            segments, _info = self.model.transcribe(
+                silence,
+                language="en",
+                task="transcribe",
+                beam_size=1,
+                vad_filter=False,
+                condition_on_previous_text=False,
+                initial_prompt=None,
+                temperature=[0.0],
+            )
+            list(segments)  # force the lazy decode to actually run
+        except Exception:
+            pass  # warmup is best-effort; real errors surface on transcribe()

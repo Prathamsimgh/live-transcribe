@@ -29,6 +29,11 @@ from segmenter import Segmenter  # noqa: E402
 # losing a moment of it.
 FRAME_QUEUE_MAX = 400  # ~12.8 s of audio
 
+# Completed utterances waiting for the GPU. Bounded for memory, but the
+# segmenter blocks when full rather than dropping one (spec: never drop a
+# completed utterance) -- backpressure then surfaces as frame drops instead.
+UTTERANCE_QUEUE_MAX = 8
+
 
 def db_level(rms: float) -> float:
     """Map RMS to a 0..1 bar over a -60..0 dB range."""
@@ -62,6 +67,8 @@ class App:
 
         self.running = False
         self._worker: threading.Thread | None = None
+        self._asr_worker: threading.Thread | None = None
+        self.utterance_q: "queue.Queue" = queue.Queue(maxsize=UTTERANCE_QUEUE_MAX)
         self._dropped = 0
         self.window = None
 
@@ -102,9 +109,12 @@ class App:
     def _on_audio_error(self, exc: Exception) -> None:
         self._say("status", f"audio error: {type(exc).__name__}")
 
-    # ------------------------------------------------------- worker thread
+    # ------------------------------------------------------- worker threads
 
     def _work(self) -> None:
+        """Segmentation thread: frames -> utterances. Never blocks on ASR,
+        so VAD boundaries stay aligned to live audio while the GPU is busy.
+        """
         while self.running:
             try:
                 frame = self.frame_q.get(timeout=0.25)
@@ -123,8 +133,30 @@ class App:
         tail = self.segmenter.flush()
         if tail is not None:
             self._emit(tail)
+        # Sentinel: the ASR thread exits only after draining every queued
+        # utterance, so STOP never loses the final sentence.
+        self._enqueue(None)
+
+    def _enqueue(self, item) -> None:
+        while True:
+            try:
+                self.utterance_q.put(item, timeout=0.25)
+                return
+            except queue.Full:
+                continue
 
     def _emit(self, utterance) -> None:
+        self._enqueue(utterance)
+
+    def _asr_work(self) -> None:
+        """ASR thread: utterances -> text, in order, one GPU call at a time."""
+        while True:
+            utterance = self.utterance_q.get()
+            if utterance is None:
+                return
+            self._process(utterance)
+
+    def _process(self, utterance) -> None:
         if self.transcriber is None:
             return
         try:
@@ -166,6 +198,8 @@ class App:
                 from asr import Transcriber
 
                 self.transcriber = Transcriber(self.s)
+                if hasattr(self.transcriber, "warmup"):
+                    self.transcriber.warmup()
             except Exception as exc:
                 self._say("status", f"model failed: {exc}")
                 return
@@ -182,6 +216,9 @@ class App:
 
         self.writer.start_session()
         self.running = True
+        self.utterance_q = queue.Queue(maxsize=UTTERANCE_QUEUE_MAX)
+        self._asr_worker = threading.Thread(target=self._asr_work, daemon=True)
+        self._asr_worker.start()
         self._worker = threading.Thread(target=self._work, daemon=True)
         self._worker.start()
 
@@ -198,6 +235,12 @@ class App:
         if self._worker is not None:
             self._worker.join(timeout=3.0)
             self._worker = None
+        # The segmentation thread queues a sentinel on exit; the ASR thread
+        # drains remaining utterances (including the flushed tail) before it.
+        asr_worker = getattr(self, "_asr_worker", None)
+        if asr_worker is not None:
+            asr_worker.join(timeout=10.0)
+            self._asr_worker = None
         self.writer.stop_session()
         self._say("running", False)
         if self.window is not None:
