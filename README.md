@@ -1,5 +1,10 @@
 # Live Transcribe
 
+![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white)
+![Windows](https://img.shields.io/badge/Platform-Windows-0078D6?style=flat-square&logo=windows&logoColor=white)
+![Offline](https://img.shields.io/badge/Offline-100%25-2E7D32?style=flat-square)
+![License: MIT](https://img.shields.io/badge/License-MIT-green?style=flat-square)
+
 Real-time transcription of Windows system audio, with one-click toggle,
 append-only daily transcript files, and hotkey clipboard copy.
 
