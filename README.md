@@ -11,6 +11,12 @@ append-only daily transcript files, and hotkey clipboard copy.
 Runs fully offline on the local GPU. See
 `docs/superpowers/specs/2026-09-28-live-transcribe-design.md` for the design.
 
+## Demo
+
+![Live Transcribe demo](demo.gif)
+
+Press START and play anything on your system — captions appear in real time.
+
 ## Status
 
 Implemented and verified end-to-end on the target machine: capture at 192 kHz,
